@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
-from gtts import gTTS
 import os
+import asyncio
+from gtts import gTTS
 
 TOKEN = os.getenv("TOKEN")
 
@@ -9,14 +10,22 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.reactions = True
 intents.members = True
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# 점수 저장소
 scores = {}
 
 @bot.event
 async def on_ready():
-    print(f"{bot.user} 봇이 준비되었습니다.")
+    print(f"✅ 봇 로그인 완료: {bot.user}")
+
+    # Render 슬립 방지용 루프 시작
+    bot.loop.create_task(keep_alive())
+
+async def keep_alive():
+    while True:
+        print("⏳ Render 슬립 방지 ping 실행 중...")
+        await asyncio.sleep(600)  # 10분 간격
 
 @bot.command()
 async def 점수(ctx, member: discord.Member = None):
@@ -43,7 +52,7 @@ async def v(ctx, *, text):
         vc = await ctx.author.voice.channel.connect()
         vc.play(discord.FFmpegPCMAudio("say.mp3"))
         while vc.is_playing():
-            pass
+            await asyncio.sleep(1)
         await vc.disconnect()
         os.remove("say.mp3")
     else:
