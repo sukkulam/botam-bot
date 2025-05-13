@@ -3,7 +3,7 @@ from discord.ext import commands
 from gtts import gTTS
 import os
 
-TOKEN = "여기에_당신의_토큰을_붙여넣으세요"
+TOKEN = "MTM3MTU2NjY0NzU3NTU4MDgxMg.GGOcXW.MO18YahyA5GiU1JUcR7EQRafYuq-2Ucp99PC50"
 
 intents = discord.Intents.default()
 intents.message_content = True
